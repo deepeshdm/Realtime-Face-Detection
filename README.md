@@ -9,7 +9,6 @@ Website URL : https://share.streamlit.io/deepeshdm/realtime_face_detection/main.
   <img src="/assets/example_3.png" width="50%"/>
 </div
 
-
 ## To Run (Locally)
 
 1. Git clone the repository on your local system.
