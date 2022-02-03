@@ -7,7 +7,7 @@ Website URL : https://share.streamlit.io/deepeshdm/realtime_face_detection/main.
 <div align="center">
   <img src="/assets/example_2.png" width="50%"/>
   <img src="/assets/example_3.png" width="50%"/>
-</div
+</div>
 
 ## To Run (Locally)
 
