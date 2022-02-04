@@ -12,12 +12,12 @@ Frontal-face detection using *Haar-Cascade Algorithm* which is one of the oldest
 </div>
 
 
-Website URL : https://share.streamlit.io/deepeshdm/realtime_face_detection/main.py
+**Website URL** : https://share.streamlit.io/deepeshdm/realtime_face_detection/main.py
 
 <div align="center">
-  <img src="/assets/example_2.png" width="50%"/>
-  <img src="/assets/example_3.png" width="50%"/>
+  <img src="/assets/web_app.png" width="95%"/>
 </div>
+
 
 ## To Run (Locally)
 
@@ -36,7 +36,11 @@ pip install -r requirements.txt
 streamlit run main.py
 ```
 
-
+<h2>Examples</h2>
+<div align="center">
+  <img src="/assets/example_2.png" width="50%"/>
+  <img src="/assets/example_3.png" width="50%"/>
+</div>
 
 
 
