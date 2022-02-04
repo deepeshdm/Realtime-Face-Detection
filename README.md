@@ -43,5 +43,3 @@ streamlit run main.py
 </div>
 
 
-
-
