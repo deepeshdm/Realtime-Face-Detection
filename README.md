@@ -2,6 +2,16 @@
 
 Frontal-face detection using *Haar-Cascade Algorithm* which is one of the oldest face detection algorithms invented. It is based on the sliding window approach,giving a real-time experience with 30-40 FPS on any average CPU.
 
+<div>
+  <b>Supported Face Detection Modes </b>
+<ul>
+  <li>Image Upload</li>
+  <li>Webcam Image Capture</li>
+  <li>Webcam Video Realtime</li>
+  </ul>
+</div>
+
+
 Website URL : https://share.streamlit.io/deepeshdm/realtime_face_detection/main.py
 
 <div align="center">
