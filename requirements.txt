@@ -2,3 +2,6 @@ numpy==1.19.5
 opencv-python==4.5.5.62
 Pillow==8.4.0
 streamlit==1.5.0
+streamlit-webrtc==0.34.2
+av==8.1.0
+

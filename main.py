@@ -2,6 +2,8 @@ from io import BytesIO
 import streamlit as st
 import numpy as np
 from PIL import Image, ImageColor
+from streamlit_webrtc import webrtc_streamer, RTCConfiguration
+import av
 import cv2
 
 # Set page configs. Get emoji names from WebFx
@@ -22,7 +24,7 @@ detection_mode = None
 # Haar-Cascade Parameters
 minimum_neighbors = 4
 # Minimum possible object size
-min_object_size = (20, 20)
+min_object_size = (50, 50)
 # bounding box thickness
 bbox_thickness = 3
 # bounding box color
@@ -57,9 +59,9 @@ with st.sidebar:
 
     # slider for choosing parameter values
 
-    min_size = st.slider(f"Mininum Object Size, Eg-{min_object_size} ", min_value=3, max_value=500,
+    min_size = st.slider(f"Mininum Object Size, Eg-{min_object_size} pixels ", min_value=3, max_value=500,
                          help="Minimum possible object size. Objects smaller than that are ignored.",
-                         value=20)
+                         value=70)
 
     min_object_size = (min_size, min_size)
 
@@ -130,7 +132,8 @@ if detection_mode == "Image Upload":
                 st.image(img)
 
                 if len(faces) > 1:
-                    st.success("Total of " + str(len(faces)) + " faces detected inside the image.")
+                    st.success("Total of " + str(
+                        len(faces)) + " faces detected inside the image. Try adjusting minimum object size if we missed anything")
 
                     # convert to pillow image
                     img = Image.fromarray(img)
@@ -150,7 +153,8 @@ if detection_mode == "Image Upload":
                             file_name="output.png",
                             mime="image/png")
                 else:
-                    st.success("Only 1 face detected inside the image.")
+                    st.success(
+                        "Only 1 face detected inside the image. Try adjusting minimum object size if we missed anything.")
 
                     # convert to pillow image
                     img = Image.fromarray(img)
@@ -210,9 +214,11 @@ if detection_mode == "Webcam Image Capture":
                 st.image(img)
 
                 if len(faces) > 1:
-                    st.success("Total of " + str(len(faces)) + " faces detected inside the image.")
+                    st.success("Total of " + str(
+                        len(faces)) + " faces detected inside the image. Try adjusting minimum object size if we missed anything")
                 else:
-                    st.success("Only 1 face detected inside the image.")
+                    st.success(
+                        "Only 1 face detected inside the image. Try adjusting minimum object size if we missed anything")
 
                 # Download the image
                 img = Image.fromarray(img)
@@ -236,56 +242,38 @@ if detection_mode == "Webcam Image Capture":
 
 if detection_mode == "Webcam Realtime":
 
-    st.info("NOTE : In order to use this mode, you need to give webcam access. "
-            "It takes few seconds for webcam to start or close.")
+    # load face detection model
+    cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
-    st.warning("NOTE : To stop the webcam detection,press any key on your keyboard.")
+    st.warning("NOTE : In order to use this mode, you need to give webcam access. "
+               "After clicking 'Start' , it takes about 10-20 seconds to ready the webcam.")
 
     spinner_message = "Wait a sec, getting some things done..."
 
     with st.spinner(spinner_message):
-        # To capture video from webcam.
-        cap = cv2.VideoCapture(0)
+
+        class VideoProcessor:
+
+            def recv(self, frame):
+
+                # convert to numpy array
+                frame = frame.to_ndarray(format="bgr24")
+
+                # detect faces
+                faces = cascade.detectMultiScale(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), 1.1, 3)
+
+                # draw bounding boxes
+                for x, y, w, h in faces:
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+
+                frame = av.VideoFrame.from_ndarray(frame, format="bgr24")
+
+                return frame
 
 
-        def start_webcam_detection():
+        webrtc_streamer(key="key", video_processor_factory=VideoProcessor,
+                        rtc_configuration=RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}))
 
-            # Load the cascade
-            face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-
-            while True:
-                # Read the frame
-                _, img = cap.read()
-                # Convert to grayscale
-                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-                # Detect the faces
-                faces = face_cascade.detectMultiScale(gray, 1.1, minNeighbors=minimum_neighbors,
-                                                      minSize=min_object_size)
-                # Draw the rectangle around each face
-                for (x, y, w, h) in faces:
-                    cv2.rectangle(img, (x, y), (x + w, y + h), color=bbox_color, thickness=bbox_thickness)
-                    # Putting text on bbox
-                    cv2.putText(img, 'Human Face', (x, y - 10), cv2.FONT_HERSHEY_DUPLEX, 0.4, bbox_color, thickness=1)
-
-                # Display
-                cv2.imshow('Press ANY key on keyboard to close window', img)
-
-                # Stop if any key is pressed
-                k = cv2.waitKey(30)
-                if k != -1:
-                    break
-            # Release the VideoCapture object
-            cv2.destroyAllWindows()
-            cap.release()
-
-    # Creating columns to center button
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        pass
-    with col3:
-        pass
-    with col2:
-        st.button("START WEBCAM", on_click=start_webcam_detection)
 
 # -------------Hide Streamlit Watermark------------------------------------------------
 hide_streamlit_style = """
