@@ -19,10 +19,12 @@ st.markdown(
     "invented. It is based on the sliding window approach,giving a real-time experience with 30-40 FPS on any average CPU.")
 
 supported_modes = "<html> " \
-                  "<body><div> <b>Supported Detection Modes (Change modes from sidebar)</b>" \
+                  "<body><div> <b>Supported Face Detection Modes (Change modes from sidebar menu)</b>" \
                   "<ul><li>Image Upload</li><li>Webcam Image Capture</li><li>Webcam Video Realtime</li></ul>" \
                   "</div></body></html>"
 st.markdown(supported_modes, unsafe_allow_html=True)
+
+st.warning("NOTE : Click the arrow icon at Top-Left to open Sidebar menu. ")
 
 # -------------Sidebar Section------------------------------------------------
 
@@ -95,9 +97,6 @@ with st.sidebar:
 
 if detection_mode == "Image Upload":
 
-    # line break
-    st.markdown(" ")
-
     # Example Images
     col1, col2 = st.columns(2)
     with col1:
@@ -105,8 +104,6 @@ if detection_mode == "Image Upload":
     with col2:
         st.image(image="./assets/example_3.png")
 
-    # line break
-    st.markdown(" ")
     uploaded_file = st.file_uploader("Upload Image (Only PNG & JPG images allowed)", type=['png', 'jpg'])
 
     if uploaded_file is not None:
