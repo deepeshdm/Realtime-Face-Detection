@@ -255,7 +255,6 @@ if detection_mode == "Webcam Realtime":
         class VideoProcessor:
 
             def recv(self, frame):
-
                 # convert to numpy array
                 frame = frame.to_ndarray(format="bgr24")
 
@@ -272,8 +271,8 @@ if detection_mode == "Webcam Realtime":
 
 
         webrtc_streamer(key="key", video_processor_factory=VideoProcessor,
-                        rtc_configuration=RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}))
-
+                        rtc_configuration=RTCConfiguration(
+                            {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}))
 
 # -------------Hide Streamlit Watermark------------------------------------------------
 hide_streamlit_style = """
