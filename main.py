@@ -18,6 +18,12 @@ st.markdown(
     "Frontal-face detection using *Haar-Cascade Algorithm* which is one of the oldest face detection algorithms "
     "invented. It is based on the sliding window approach,giving a real-time experience with 30-40 FPS on any average CPU.")
 
+supported_modes = "<html> " \
+                  "<body><div> <b>Supported Detection Modes (Change modes from sidebar)</b>" \
+                  "<ul><li>Image Upload</li><li>Webcam Image Capture</li><li>Webcam Video Realtime</li></ul>" \
+                  "</div></body></html>"
+st.markdown(supported_modes, unsafe_allow_html=True)
+
 # -------------Sidebar Section------------------------------------------------
 
 detection_mode = None
