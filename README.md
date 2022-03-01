@@ -12,7 +12,7 @@ Frontal-face detection using *Haar-Cascade Algorithm* which is one of the oldest
 </div>
 
 
-**Website URL** : https://share.streamlit.io/deepeshdm/realtime_face_detection/main.py
+**🔥 Official Website :** https://share.streamlit.io/deepeshdm/realtime_face_detection/main.py
 
 <div align="center">
   <img src="/assets/web_app.png" width="95%"/>
